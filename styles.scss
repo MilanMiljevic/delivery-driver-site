@@ -1,149 +1,297 @@
-// Variables
-$primary-color: #ff5722; // Energetic orange
-$dark-color: #212121;
-$light-color: #f5f5f5;
+// --- VARIJABLE ---
+$primary: #0066ff;
+$primary-hover: #0052cc;
+$text-dark: #111827;
+$text-gray: #6b7280;
+$border: #e5e7eb;
+$bg-body: #f9fafb;
 $white: #ffffff;
-$font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+$error-red: #ef4444;
+$success-green: #10b981;
 
-// Mixins
-@mixin flex-center {
+// --- RESET & BASE ---
+body {
+  background-color: $bg-body;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin: 0;
   display: flex;
   justify-content: center;
+  padding: 40px 20px;
+  color: $text-dark;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 720px;
+}
+
+// --- HEADER ---
+.main-header {
+  text-align: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 15px;
+    color: $text-gray;
+    margin: 0 auto 12px auto;
+    max-width: 500px;
+    line-height: 1.5;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #9ca3af;
+    line-height: 1.4;
+    display: block;
+  }
+}
+
+// --- PROGRESS BAR ---
+.progress-wrapper {
+  height: 4px;
+  background: $border;
+  border-radius: 10px;
+  margin-bottom: 32px;
+  overflow: hidden;
+
+  .progress-bar {
+    height: 100%;
+    background: $primary;
+    width: 0%; // JS kontroliše širinu
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// --- WIZARD CONTAINER ---
+.wizard-container {
+  background: $white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  min-height: 300px;
+}
+
+// --- STEPS & ANIMATIONS ---
+.form-step {
+  display: none;
+  &.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-title {
+  margin-bottom: 32px;
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+  }
+}
+
+// --- FORM GROUPS (SOFT CARDS) ---
+.form-group {
+  background: #fcfcfd;
+  border: 1px solid #f0f2f5;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+// --- INPUT GRID & FIELDS ---
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+
+    &.full {
+      grid-column: 1 / -1;
+    }
+    &.half {
+      grid-column: 1 / 2;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: $text-dark;
+    }
+
+    input,
+    select.custom-select {
+      padding: 12px 16px;
+      border: 1px solid $border;
+      border-radius: 10px;
+      font-size: 14px;
+      background-color: $white;
+      transition: all 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+      }
+    }
+  }
+}
+
+// --- CUSTOM SELECT ---
+select.custom-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+// --- GLOBAL BUTTON STYLES ---
+.btn-next,
+.btn-back {
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: inline-flex;
   align-items: center;
-}
-
-// Reset & Base
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: $font-main;
-  line-height: 1.6;
-  color: $dark-color;
-  background-color: $white;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-// Typography
-h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-// Components
-.btn-primary {
-  background: $primary-color;
-  color: $white;
-  padding: 10px 20px;
+  justify-content: center;
   text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background 0.3s ease;
+}
+
+.btn-next {
+  background: $primary;
+  color: $white;
+  border: none;
 
   &:hover {
-    background: #da3f10;
+    background: $primary-hover;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 
-.btn-large {
-  @extend .btn-primary;
-  padding: 15px 30px;
-  display: inline-block;
-  font-size: 1.2rem;
-  margin-top: 20px;
+.btn-back {
+  background: transparent;
+  color: $text-gray;
+  border: 1px solid $border;
+
+  &:hover {
+    background: #f9f9f9;
+    color: $text-dark;
+  }
 }
 
-// Sections
-.navbar {
-  background: $white;
+// --- FOOTER ---
+.form-footer {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+// --- SUCCESS SCREEN ---
+.success-screen {
+  text-align: center;
   padding: 20px 0;
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
 
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .success-icon {
+    font-size: 60px;
+    color: $success-green;
+    margin-bottom: 20px;
+    line-height: 1;
   }
 
-  .logo {
-    font-size: 1.5rem;
-    span {
-      color: $primary-color;
-    }
-  }
-}
-
-.hero {
-  background:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?auto=format&fit=crop&w=1200&q=80");
-  background-size: cover;
-  background-position: center;
-  color: $white;
-  padding: 100px 0;
-  text-align: center;
-}
-
-.perks {
-  padding: 60px 0;
-  background: $light-color;
-
-  .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+  h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
   }
 
-  .perk-card {
-    background: $white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-
-    h3 {
-      color: $primary-color;
-      margin-bottom: 15px;
-    }
+  p {
+    color: $text-gray;
+    margin-bottom: 32px;
+    line-height: 1.6;
   }
 }
 
-.apply-section {
-  padding: 80px 0;
-  text-align: center;
+// --- VALIDATION & ERROR ---
+.error-message {
+  color: $error-red;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 4px;
+  display: block;
+  animation: fadeInError 0.2s ease-in;
+}
 
-  .form-wrapper {
-    margin-top: 40px;
-    background: $white;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #eee;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-footer {
-  background: $dark-color;
-  color: $white;
-  padding: 30px 0;
-  text-align: center;
-  font-size: 0.9rem;
+// --- SPINNER ---
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: $white;
+  animation: spin 0.8s linear infinite;
+  margin-right: 10px;
 }
 
-// Mobile Responsive
-@media (max-width: 768px) {
-  .hero h2 {
-    font-size: 1.8rem;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

@@ -1,0 +1,132 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const steps = document.querySelectorAll(".form-step");
+  const nextBtn = document.getElementById("nextBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const progressBar = document.getElementById("progressBar");
+  const wizardForm = document.getElementById("wizardForm");
+
+  // TVOJ URL ZA GOOGLE SCRIPT
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbwgfKlZhQFnBin-msxeJmSVoVZNiCClojRMgsnZ16zrZPjBjNHy2HAPhaXlo8u0rY8/exec";
+
+  let currentStepIndex = 0;
+  const totalStepsCount = 2; // Podesi na 8 kada dodaš sve korake
+
+  function updateWizard() {
+    steps.forEach((step, index) => {
+      step.classList.toggle("active", index === currentStepIndex);
+    });
+
+    const progressPercent = ((currentStepIndex + 1) / totalStepsCount) * 100;
+    progressBar.style.width = progressPercent + "%";
+
+    prevBtn.style.visibility = currentStepIndex === 0 ? "hidden" : "visible";
+
+    if (currentStepIndex === steps.length - 1) {
+      nextBtn.innerText = "Absenden";
+    } else {
+      nextBtn.innerText = "Weiter";
+    }
+  }
+
+  function validateField(input) {
+    let errorSpan = input.parentElement.querySelector(".error-message");
+    if (!input.value.trim()) {
+      input.style.borderColor = "#EF4444";
+      if (!errorSpan) {
+        errorSpan = document.createElement("span");
+        errorSpan.className = "error-message";
+        errorSpan.innerText = "Dieses Feld ist ein Pflichtfeld";
+        input.parentElement.appendChild(errorSpan);
+      }
+      return false;
+    } else {
+      input.style.borderColor = "#E5E7EB";
+      if (errorSpan) errorSpan.remove();
+      return true;
+    }
+  }
+
+  nextBtn.addEventListener("click", () => {
+    const activeStep = steps[currentStepIndex];
+    const requiredInputs = activeStep.querySelectorAll(
+      "input[required], select[required]",
+    );
+
+    let allValid = true;
+    requiredInputs.forEach((input) => {
+      const isValid = validateField(input);
+      if (!isValid) allValid = false;
+    });
+
+    if (!allValid) return;
+
+    // Ako NIJE poslednji korak, samo idi dalje
+    if (currentStepIndex < steps.length - 1) {
+      currentStepIndex++;
+      updateWizard();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // Ako JESTE poslednji korak, pokreni slanje podataka
+    else {
+      sendData();
+    }
+  });
+
+  // Funkcija za slanje podataka na Google Apps Script
+  function sendData() {
+    // 1. Vizuelna promena dugmeta (Slanje u toku)
+    nextBtn.innerHTML = '<span class="spinner"></span> Bitte warten...'; // "Molimo sačekajte..."
+    nextBtn.disabled = true;
+    nextBtn.style.opacity = "0.7";
+    nextBtn.style.cursor = "not-allowed";
+
+    const formData = new FormData(wizardForm);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      cache: "no-cache",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        // 2. Uspeh - Prikazujemo poruku unutar samog vizarda
+        const container = document.querySelector(".wizard-container");
+        container.innerHTML = `
+    <div class="success-screen" style="text-align: center; padding: 40px;">
+        <div class="success-icon" style="font-size: 60px; color: #10B981; margin-bottom: 20px;">✓</div>
+        <h2 style="margin-bottom: 10px; color: #111827;">Vielen Dank!</h2>
+        <p style="color: #6B7280; margin-bottom: 30px;">
+            Ihre Daten wurden erfolgreich übermittelt.<br> 
+            Eine Kopie wurde an Ihre E-Mail-Adresse gesendet.
+        </p>
+        <button onclick="location.reload()" class="btn-next">Neues Formular</button>
+    </div>
+`;
+      })
+      .catch((error) => {
+        // 3. Greška
+        console.error("Error:", error);
+        alert("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."); // "Došlo je do greške..."
+        nextBtn.innerText = "Absenden";
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
+        nextBtn.style.cursor = "pointer";
+      });
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (currentStepIndex > 0) {
+      currentStepIndex--;
+      updateWizard();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+
+  updateWizard();
+});

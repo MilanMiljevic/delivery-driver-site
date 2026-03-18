@@ -1,116 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drive With Us | Delivery Driver Opportunities</title>
+    <title>Personalfragebogen Wizard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <header class="navbar">
-        <div class="container">
-            <h1 class="logo">Swift<span>Deliver</span></h1>
-            <a href="#apply" class="btn-primary">Apply Now</a>
+    <div class="app-container">
+        <header class="main-header">
+            <h1>Personalfragebogen</h1>
+            <p>Bitte ergänzen Sie die fehlenden Angaben und überprüfen Sie die vorhandenen Eintragungen</p>
+            <span class="disclaimer">
+                Bei den mit * markierten Feldern handelt es sich um Pflichtangaben<br>
+                ¹bei fehlender SV-Nummer Pflichtangabe
+            </span>
+        </header>
+
+        <div class="progress-wrapper">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h2>Be Your Own Boss on the Road.</h2>
-                <p>Earn competitive pay, choose your own hours, and join a fleet that values your hard work.</p>
-                <a href="#apply" class="btn-large">Start Driving Today</a>
-            </div>
-        </section>
+        <main class="wizard-container">
+            <form id="wizardForm">
 
-        <section class="perks">
-            <div class="container">
-                <div class="perk-card">
-                    <h3>Flexible Schedule</h3>
-                    <p>Work when it suits you. Full-time, part-time, or just on weekends.</p>
-                </div>
-                <div class="perk-card">
-                    <h3>Weekly Pay</h3>
-                    <p>No waiting around. Get your earnings deposited directly every Friday.</p>
-                </div>
-                <div class="perk-card">
-                    <h3>Local Routes</h3>
-                    <p>Stay close to home with optimized routes in your neighborhood.</p>
-                </div>
-            </div>
-        </section>
+                <section class="form-step active" data-step="1">
+                    <div class="step-title">
+                        <h2>Allgemeine Angaben</h2>
+                    </div>
+                    <div class="input-grid">
+                        <div class="field"><label>Personal-Nr.:</label><input type="text" name="personal_nr"></div>
 
-        <section id="apply" class="apply-section">
-            <div class="container">
-                <h2>Ready to join the team?</h2>
-                <p>Fill out the form below and our team will get back to you within 24 hours.</p>
-                <!--
-                <div class="form-wrapper">
-                    <iframe
-                        data-tally-src="https://tally.so/embed/b5O2W6?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                        loading="lazy" width="100%" height="704" frameborder="0" marginheight="0" marginwidth="0"
-                        title="Forma za testiranje"></iframe>
-                    <script>var d = document, w = "https://tally.so/widgets/embed.js", v = function () { "undefined" != typeof Tally ? Tally.loadEmbeds() : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function (e) { e.src = e.dataset.tallySrc })) }; if ("undefined" != typeof Tally) v(); else if (d.querySelector('script[src="' + w + '"]') == null) { var s = d.createElement("script"); s.src = w, s.onload = v, s.onerror = v, d.body.appendChild(s); }</script>
-                </div>
-                -->
-                <form id="driverForm" class="custom-form">
-                    <input type="text" name="ime" placeholder="Vaše Ime i Prezime" required>
-                    <input type="email" name="email" placeholder="Vaš Email" required>
-                    <input type="text" name="telefon" placeholder="Broj telefona" required>
-                    <select name="vozilo">
-                        <option value="auto">Automobil</option>
-                        <option value="skuter">Skuter/Motor</option>
-                        <option value="bicikl">Bicikl</option>
-                    </select>
-                    <button type="submit" id="submitBtn">Pošalji prijavu</button>
-                    <p id="msg"></p>
-                </form>
-            </div>
-        </section>
-    </main>
+                        <div class="field"><label>Name*:</label><input type="text" name="name" required></div>
+                        <div class="field"><label>Vorname*:</label><input type="text" name="vorname" required></div>
+                        <div class="field"><label>geb. am*:</label><input type="date" name="geb_am" required></div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 SwiftDeliver Logistics. All rights reserved.</p>
-        </div>
-    </footer>
+                        <div class="field"><label>Geburtsname¹:</label><input type="text" name="geburtsname"></div>
+                        <div class="field"><label>Geburtsort¹:</label><input type="text" name="geburtsort"></div>
+                        <div class="field"><label>Nationalität¹:</label><input type="text" name="nationalitaet"></div>
 
+                        <div class="field">
+                            <label>Geschlecht:</label>
+                            <select name="geschlecht" class="custom-select">
+                                <option value="" disabled selected>Bitte wählen...</option>
+                                <option value="weiblich">weiblich</option>
+                                <option value="männlich">männlich</option>
+                                <option value="divers">divers</option>
+                                <option value="unbestimmt">unbestimmt</option>
+                            </select>
+                        </div>
+
+                        <div class="field"><label>Geburtsland¹:</label><input type="text" name="geburtsland"></div>
+
+                        <div class="field">
+                            <label>Adresse: Straße, Haus-Nr., PLZ, Ort, Land*:</label>
+                            <input type="text" name="adresse" required>
+                        </div>
+
+                        <div class="field"><label>E-Mail-Adresse:</label><input type="email" name="email"></div>
+                        <div class="field"><label>Telefon:</label><input type="tel" name="telefon"></div>
+                    </div>
+                </section>
+
+                <section class="form-step" data-step="2">
+                    <div class="step-title">
+                        <h2>Allgemeine Angaben</h2>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field full"><label>IBAN:</label><input type="text" name="iban"></div>
+                            <div class="field"><label>BIC:</label><input type="text" name="bic"></div>
+                            <div class="field"><label>Bank:</label><input type="text" name="bank"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field"><label>Ausbildung als:</label><input type="text" name="ausbildung"></div>
+                            <div class="field"><label>eingestellt als (Berufsbezeichnung):</label><input type="text"
+                                    name="beruf"></div>
+                            <div class="field"><label>Bewerbung vom:</label><input type="date" name="bewerbung_datum">
+                            </div>
+                            <div class="field"><label>Vertragsabschluss am:</label><input type="date"
+                                    name="vertrag_datum"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field full"><label>Urlaub:</label><input type="text" name="urlaub"></div>
+                            <div class="field"><label>Monatsstunden:</label><input type="number" name="monatsstunden">
+                            </div>
+                            <div class="field"><label>Wochenstunden:</label><input type="number" name="wochenstunden">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field"><label>Eintritt:</label><input type="date" name="eintritt"></div>
+                            <div class="field"><label>Austritt:</label><input type="date" name="austritt"></div>
+                            <div class="field full">
+                                <label>Befristung:</label>
+                                <select name="befristung" class="custom-select">
+                                    <option value="" disabled selected>Bitte wählen...</option>
+                                    <option value="ja">Ja</option>
+                                    <option value="nein">Nein</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field"><label>Fahrerlaubnis/Klasse:</label><input type="text"
+                                    name="fuehrerschein"></div>
+                            <div class="field"><label>seit:</label><input type="date" name="fuehrerschein_seit"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-grid">
+                            <div class="field">
+                                <label>Schwerbehinderung:</label>
+                                <select name="schwerbehinderung" class="custom-select">
+                                    <option value="" disabled selected>Bitte wählen...</option>
+                                    <option value="ja">Ja</option>
+                                    <option value="nein">Nein</option>
+                                </select>
+                            </div>
+                            <div class="field"><label>Grad:</label><input type="text" name="behinderung_grad"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="form-footer">
+                    <button type="button" id="prevBtn" class="btn-back">Zurück</button>
+                    <div class="spacer"></div>
+                    <button type="button" id="nextBtn" class="btn-next">Weiter</button>
+                </footer>
+            </form>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwgfKlZhQFnBin-msxeJmSVoVZNiCClojRMgsnZ16zrZPjBjNHy2HAPhaXlo8u0rY8/exec';
-    const form = document.getElementById('driverForm');
-    const msg = document.getElementById('msg');
-    const submitBtn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        msg.innerHTML = "Slanje u toku...";
-
-        // Koristimo FormData da pokupimo podatke
-        fetch(scriptURL, {
-            method: 'POST',
-            body: new FormData(form),
-            mode: 'no-cors' // Dodajemo ovo da izbegnemo CORS blokadu
-        })
-            .then(() => {
-                // Pošto koristimo 'no-cors', browser ne može da pročita odgovor, 
-                // ali ako nema error-a, smatramo da je uspelo.
-                msg.innerHTML = "Uspešno ste se prijavili! Kontaktiraćemo vas.";
-                msg.style.color = "green";
-                form.reset();
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
-                msg.innerHTML = "Greška! Pokušajte ponovo.";
-                msg.style.color = "red";
-                submitBtn.disabled = false;
-                console.error('Error!', error.message);
-            });
-    });
-</script>
 
 </html>

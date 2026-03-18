@@ -47,7 +47,7 @@
             <div class="container">
                 <h2>Ready to join the team?</h2>
                 <p>Fill out the form below and our team will get back to you within 24 hours.</p>
-
+                <!--
                 <div class="form-wrapper">
                     <iframe
                         data-tally-src="https://tally.so/embed/b5O2W6?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
@@ -55,6 +55,19 @@
                         title="Forma za testiranje"></iframe>
                     <script>var d = document, w = "https://tally.so/widgets/embed.js", v = function () { "undefined" != typeof Tally ? Tally.loadEmbeds() : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function (e) { e.src = e.dataset.tallySrc })) }; if ("undefined" != typeof Tally) v(); else if (d.querySelector('script[src="' + w + '"]') == null) { var s = d.createElement("script"); s.src = w, s.onload = v, s.onerror = v, d.body.appendChild(s); }</script>
                 </div>
+                -->
+                <form id="driverForm" class="custom-form">
+                    <input type="text" name="ime" placeholder="Vaše Ime i Prezime" required>
+                    <input type="email" name="email" placeholder="Vaš Email" required>
+                    <input type="text" name="telefon" placeholder="Broj telefona" required>
+                    <select name="vozilo">
+                        <option value="auto">Automobil</option>
+                        <option value="skuter">Skuter/Motor</option>
+                        <option value="bicikl">Bicikl</option>
+                    </select>
+                    <button type="submit" id="submitBtn">Pošalji prijavu</button>
+                    <p id="msg"></p>
+                </form>
             </div>
         </section>
     </main>
@@ -66,5 +79,27 @@
     </footer>
 
 </body>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxCQSRNLycW9W4YPN-u1EsCFSi_3RktMAF2fOc_fg5Updy6p-SQnIpz0HOxhXUOJypvTA/exec';
+    const form = document.getElementById('driverForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('submitBtn').disabled = true;
+        msg.innerHTML = "Slanje u toku...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            .then(response => {
+                msg.innerHTML = "Uspešno ste se prijavili! Kontaktiraćemo vas.";
+                form.reset();
+                document.getElementById('submitBtn').disabled = false;
+            })
+            .catch(error => {
+                msg.innerHTML = "Greška! Pokušajte ponovo.";
+                console.error('Error!', error.message);
+            });
+    });
+</script>
 
 </html>

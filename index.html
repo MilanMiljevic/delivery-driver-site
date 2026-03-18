@@ -83,20 +83,31 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxCQSRNLycW9W4YPN-u1EsCFSi_3RktMAF2fOc_fg5Updy6p-SQnIpz0HOxhXUOJypvTA/exec';
     const form = document.getElementById('driverForm');
     const msg = document.getElementById('msg');
+    const submitBtn = document.getElementById('submitBtn');
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        document.getElementById('submitBtn').disabled = true;
+        submitBtn.disabled = true;
         msg.innerHTML = "Slanje u toku...";
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-            .then(response => {
+        // Koristimo FormData da pokupimo podatke
+        fetch(scriptURL, {
+            method: 'POST',
+            body: new FormData(form),
+            mode: 'no-cors' // Dodajemo ovo da izbegnemo CORS blokadu
+        })
+            .then(() => {
+                // Pošto koristimo 'no-cors', browser ne može da pročita odgovor, 
+                // ali ako nema error-a, smatramo da je uspelo.
                 msg.innerHTML = "Uspešno ste se prijavili! Kontaktiraćemo vas.";
+                msg.style.color = "green";
                 form.reset();
-                document.getElementById('submitBtn').disabled = false;
+                submitBtn.disabled = false;
             })
             .catch(error => {
                 msg.innerHTML = "Greška! Pokušajte ponovo.";
+                msg.style.color = "red";
+                submitBtn.disabled = false;
                 console.error('Error!', error.message);
             });
     });

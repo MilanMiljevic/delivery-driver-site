@@ -16,10 +16,22 @@
         <header class="main-header">
             <h1>Personalfragebogen</h1>
             <p>Bitte ergänzen Sie die fehlenden Angaben und überprüfen Sie die vorhandenen Eintragungen</p>
-            <span class="disclaimer">
-                Bei den mit * markierten Feldern handelt es sich um Pflichtangaben<br>
-                ¹bei fehlender SV-Nummer Pflichtangabe
-            </span>
+            <div class="info-note">
+                <div class="info-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="info-content">
+                    <p><strong>Wichtige Hinweise:</strong></p>
+                    <ul>
+                        <li>Mit <span>*</span> markierte Felder sind Pflichtangaben.</li>
+                        <li><span>¹</span> Pflichtangabe, falls keine Sozialversicherungsnummer (SV-Nummer) vorhanden
+                            ist.</li>
+                    </ul>
+                </div>
+            </div>
         </header>
 
         <div class="progress-wrapper">

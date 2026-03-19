@@ -254,5 +254,43 @@ select.custom-select {
     transform: rotate(360deg);
   }
 }
+.info-note {
+  display: flex;
+  gap: 16px;
+  background: rgba(0, 102, 255, 0.05);
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 600px;
+  text-align: left;
+}
+.info-note .info-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: #0066ff;
+  margin-top: 2px;
+}
+.info-note .info-content p {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0 !important;
+}
+.info-note .info-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.info-note .info-content ul li {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.6;
+  position: relative;
+}
+.info-note .info-content ul li span {
+  color: #0066ff;
+  font-weight: 700;
+}
 
 /*# sourceMappingURL=styles.css.map */

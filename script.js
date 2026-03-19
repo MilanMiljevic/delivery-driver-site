@@ -67,6 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Ako ima grešaka, skroluj do prvog problematičnog polja
     if (!allValid) {
+      // 1. ODMAH fokusiramo (ovo 'otključava' tastaturu na iOS-u jer je direktna posledica klika)
+      firstInvalidField.focus();
+
       firstInvalidField.scrollIntoView({
         behavior: "smooth",
         block: "center", // Centriraj polje na ekranu

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://script.google.com/macros/s/AKfycbxolUVIuzGg7ioZ1Ey5_J5XtoEIzb34opEVYZ68OEw7TANjWSiccFsoiGFuK8f2phQJ/exec";
 
   let currentStepIndex = 0;
-  const totalStepsCount = 2; // Podesi na 8 kada dodaš sve korake
+  const totalStepsCount = 2; // Vraćeno na 2 koraka
 
   function updateWizard() {
     steps.forEach((step, index) => {
@@ -54,29 +54,41 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     let allValid = true;
+    let firstInvalidField = null; // Ovde pamtimo prvo polje sa greškom
+
+    // Validacija svih polja
     requiredInputs.forEach((input) => {
       const isValid = validateField(input);
-      if (!isValid) allValid = false;
+      if (!isValid) {
+        allValid = false;
+        if (!firstInvalidField) firstInvalidField = input; // Uzmi samo prvo nevalidno
+      }
     });
 
-    if (!allValid) return;
+    // Ako ima grešaka, skroluj do prvog problematičnog polja
+    if (!allValid) {
+      firstInvalidField.scrollIntoView({
+        behavior: "smooth",
+        block: "center", // Centriraj polje na ekranu
+      });
 
-    // Ako NIJE poslednji korak, samo idi dalje
+      // Opciono: fokusiraj polje nakon malog kašnjenja da iskoči tastatura
+      setTimeout(() => firstInvalidField.focus(), 600);
+      return;
+    }
+
+    // Ako je sve validno, idi na sledeći korak ili šalji
     if (currentStepIndex < steps.length - 1) {
       currentStepIndex++;
       updateWizard();
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    // Ako JESTE poslednji korak, pokreni slanje podataka
-    else {
+    } else {
       sendData();
     }
   });
 
-  // Funkcija za slanje podataka na Google Apps Script
   function sendData() {
-    // 1. Vizuelna promena dugmeta (Slanje u toku)
-    nextBtn.innerHTML = '<span class="spinner"></span> Bitte warten...'; // "Molimo sačekajte..."
+    nextBtn.innerHTML = '<span class="spinner"></span> Bitte warten...';
     nextBtn.disabled = true;
     nextBtn.style.opacity = "0.7";
     nextBtn.style.cursor = "not-allowed";
@@ -95,24 +107,20 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify(data),
     })
       .then(() => {
-        // 2. Uspeh - Prikazujemo poruku unutar samog vizarda
         const container = document.querySelector(".wizard-container");
         container.innerHTML = `
-    <div class="success-screen" style="text-align: center; padding: 40px;">
-        <div class="success-icon" style="font-size: 60px; color: #10B981; margin-bottom: 20px;">✓</div>
-        <h2 style="margin-bottom: 10px; color: #111827;">Vielen Dank!</h2>
-        <p style="color: #6B7280; margin-bottom: 30px;">
-            Ihre Daten wurden erfolgreich übermittelt.<br> 
-            Eine Kopie wurde an Ihre E-Mail-Adresse gesendet.
-        </p>
-        <button onclick="location.reload()" class="btn-next">Neues Formular</button>
-    </div>
-`;
+          <div class="success-screen">
+              <div class="success-icon">✓</div>
+              <h2>Vielen Dank!</h2>
+              <p>Ihre Daten wurden erfolgreich übermittelt.<br> 
+                 Eine Kopie wurde an Ihre E-Mail-Adresse gesendet.</p>
+              <button onclick="location.reload()" class="btn-next">Neues Formular</button>
+          </div>
+        `;
       })
       .catch((error) => {
-        // 3. Greška
         console.error("Error:", error);
-        alert("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."); // "Došlo je do greške..."
+        alert("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.");
         nextBtn.innerText = "Absenden";
         nextBtn.disabled = false;
         nextBtn.style.opacity = "1";

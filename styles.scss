@@ -341,3 +341,10 @@ select.custom-select {
     }
   }
 }
+
+// Dodaj ovo bilo gde u .scss
+input,
+select,
+.field {
+  scroll-margin-top: 120px; // Ovo drži polje dalje od gornje ivice ekrana pri skrolovanju
+}

@@ -293,4 +293,10 @@ select.custom-select {
   font-weight: 700;
 }
 
+input,
+select,
+.field {
+  scroll-margin-top: 120px;
+}
+
 /*# sourceMappingURL=styles.css.map */

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // TVOJ URL ZA GOOGLE SCRIPT
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbx0m4NcimUUY36iXw_O9pfAn0iEykTQtEeChHRdOOzi3LPJ6v0TGy_Uhs0yC3LrXG8M/exec";
+    "https://script.google.com/macros/s/AKfycbxolUVIuzGg7ioZ1Ey5_J5XtoEIzb34opEVYZ68OEw7TANjWSiccFsoiGFuK8f2phQJ/exec";
 
   let currentStepIndex = 0;
   const totalStepsCount = 2; // Podesi na 8 kada dodaš sve korake
